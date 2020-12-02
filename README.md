@@ -1,25 +1,32 @@
 # lsst_serv
-Container host communication by sockets
 
-Dockerfile uses standard docker image of LSST code "lsstsqre". 
-Just to manifest which port we use in the Docker file is "EXPOSE 5000" 
-(the number of PORT can be any available free port), but more important 
-is setting ports running of the built image.
+Container host for the LSST Software Stack driven by socket communication.
 
+This repo uses the official LSST docker image `lsstsqre`.
+The port communication requires to expose ports (`EXPOSE 5000` in our case)
+inside the dockerfile.
 
-We need script (in this case we use bash script "b_script.sh") to set up 
-environment of the "lsstsqre" image with command:
-source /opt/lsst/software/stack/loadLSST.bash
+Port forwaring from inside the container to the local machine is set up
+when building the container.
 
+The bash script "b_script.sh" is necessaary to set up the LSST environment
+inside the "lsstsqre" image with this command:
 
-Before make built of docker image please change property of the "b_script.sh" 
-with command "chmod +x"
+    source /opt/lsst/software/stack/loadLSST.bash
 
+### Building the container
 
-We building the image with standard command:
-sudo docker build -t lsst_serv .
+To build the container, type from the terminal:
 
+    chmod +x b_script.sh
+    docker build -t lsst_serv .
 
-We start image:
-sudo docker run -p 5000:5000 --rm -ti lsst_serv
-where we mapping 5000 port for communication of "server" and "client".
+### Run the container
+
+    docker run -p 5000:5000 --rm -ti lsst_serv
+
+We map the port 5000 from container to port 5000 in the host machine.
+
+### Sending a message from client to server
+
+TBD
